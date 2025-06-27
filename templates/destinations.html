@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Destinations - Saily{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; color: #ffeb3b; margin-bottom: 1rem;">
+        Global Destinations
+    </h1>
+    <p style="font-size: 1.2rem; opacity: 0.8;">
+        Choose from 200+ countries worldwide
+    </p>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Available Countries</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+        {% for destination in destinations %}
+        <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 2rem;">{{ destination.flag }}</span>
+                <h3 style="font-size: 1.2rem; font-weight: 600; color: white;">{{ destination.country }}</h3>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 235, 59, 0.1); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7;">1GB</div>
+                    <div style="font-weight: 600; color: #ffeb3b;">€{{ "%.2f"|format(destination.price_1gb) }}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 235, 59, 0.1); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7;">3GB</div>
+                    <div style="font-weight: 600; color: #ffeb3b;">€{{ "%.2f"|format(destination.price_3gb) }}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 235, 59, 0.1); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7;">5GB</div>
+                    <div style="font-weight: 600; color: #ffeb3b;">€{{ "%.2f"|format(destination.price_5gb) }}</div>
+                </div>
+            </div>
+
+            <a href="{{ url_for('purchase') }}" class="btn btn-primary btn-block">
+                Buy eSIM for {{ destination.country }}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{{ url_for('purchase') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+        Start Shopping
+    </a>
+</div>
+{% endblock %}

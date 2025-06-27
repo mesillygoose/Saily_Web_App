@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}My Plans - Saily{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; color: #ffeb3b; margin-bottom: 1rem;">
+        My eSIM Plans
+    </h1>
+    <p style="font-size: 1.2rem; opacity: 0.8;">
+        Manage your active subscriptions
+    </p>
+</div>
+
+{% if plans %}
+    <div style="display: grid; gap: 1.5rem;">
+        {% for plan in plans %}
+        <div class="card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-size: 2rem;">{{ plan.flag }}</span>
+                    <div>
+                        <h3 style="font-size: 1.3rem; font-weight: 600; color: #ffeb3b;">{{ plan.country }}</h3>
+                        <p style="opacity: 0.7; margin: 0;">Purchased: {{ plan.purchase_date }}</p>
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    {% if plan.status == 'active' %}
+                        <span style="background: #ffeb3b; color: #000000; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                            ACTIVE
+                        </span>
+                    {% else %}
+                        <span style="background: rgba(255, 255, 255, 0.2); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                            {{ plan.status|upper }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.25rem;">Data Plan</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: #ffeb3b;">{{ plan.data_amount|upper }}</div>
+                </div>
+
+                <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.25rem;">Duration</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: white;">{{ plan.duration }} days</div>
+                </div>
+
+                <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.25rem;">Price Paid</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: white;">€{{ "%.2f"|format(plan.price) }}</div>
+                </div>
+
+                <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.25rem;">Data Used</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: white;">{{ plan.data_used }} GB</div>
+                </div>
+            </div>
+
+            {% if plan.status != 'active' %}
+                <div style="text-align: center;">
+                    <a href="{{ url_for('activate_plan', plan_id=plan.id) }}" class="btn btn-primary">
+                        Activate Plan
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">📱</div>
+        <h2 style="color: #ffeb3b; margin-bottom: 1rem;">No Plans Yet</h2>
+        <p style="opacity: 0.7; margin-bottom: 2rem;">
+            You haven't purchased any eSIM plans yet. Start exploring destinations and get connected worldwide!
+        </p>
+        <a href="{{ url_for('purchase') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+            Buy Your First eSIM
+        </a>
+    </div>
+{% endif %}
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{{ url_for('purchase') }}" class="btn btn-secondary">
+        Buy Another eSIM
+    </a>
+</div>
+{% endblock %}

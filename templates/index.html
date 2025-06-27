@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+
+{% block title %}Saily Dashboard - Stay Connected Anywhere{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        text-align: center;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #ffeb3b;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.8;
+        margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        background: rgba(255, 235, 59, 0.1);
+        border: 1px solid rgba(255, 235, 59, 0.3);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: #ffeb3b;
+        box-shadow: 0 10px 30px rgba(255, 235, 59, 0.2);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #ffeb3b;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .action-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .action-card:hover {
+        background: rgba(255, 235, 59, 0.1);
+        border-color: #ffeb3b;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-3px);
+    }
+
+    .action-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #ffeb3b;
+    }
+
+    .action-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .action-description {
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
+    .recent-activity {
+        margin-top: 2rem;
+    }
+
+    .activity-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .activity-flag {
+        font-size: 2rem;
+    }
+
+    .activity-details {
+        flex: 1;
+    }
+
+    .activity-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .activity-date {
+        opacity: 0.6;
+        font-size: 0.9rem;
+    }
+
+    .activity-status {
+        background: #ffeb3b;
+        color: #000000;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .feature-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+        background: rgba(255, 235, 59, 0.05);
+        border-color: rgba(255, 235, 59, 0.3);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .feature-title {
+        color: #ffeb3b;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .feature-text {
+        opacity: 0.8;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-actions {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1 class="hero-title">Welcome to Saily</h1>
+    <p class="hero-subtitle">Your global eSIM companion for seamless connectivity</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">€{{ "%.2f"|format(balance) }}</div>
+        <div class="stat-label">Account Balance</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ active_plans }}</div>
+        <div class="stat-label">Active Plans</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ data_used }} GB</div>
+        <div class="stat-label">Data Used</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ countries_covered }}+</div>
+        <div class="stat-label">Countries Covered</div>
+    </div>
+</div>
+
+<div class="quick-actions">
+    <a href="{{ url_for('destinations') }}" class="action-card">
+        <div class="action-icon">🌍</div>
+        <div class="action-title">Explore Destinations</div>
+        <div class="action-description">Browse 200+ countries and find the perfect plan</div>
+    </a>
+
+    <a href="{{ url_for('purchase') }}" class="action-card">
+        <div class="action-icon">📱</div>
+        <div class="action-title">Buy eSIM</div>
+        <div class="action-description">Get instant connectivity for your next trip</div>
+    </a>
+
+    <a href="{{ url_for('my_plans') }}" class="action-card">
+        <div class="action-icon">📊</div>
+        <div class="action-title">My Plans</div>
+        <div class="action-description">Manage your active eSIM subscriptions</div>
+    </a>
+
+    <a href="{{ url_for('top_up') }}" class="action-card">
+        <div class="action-icon">💳</div>
+        <div class="action-title">Top Up</div>
+        <div class="action-description">Add funds to your Saily account</div>
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Recent Activity</h2>
+    </div>
+
+    {% if recent_plans %}
+        {% for plan in recent_plans %}
+        <div class="activity-item">
+            <div class="activity-flag">{{ plan.flag }}</div>
+            <div class="activity-details">
+                <div class="activity-title">{{ plan.data_amount|upper }} plan for {{ plan.country }}</div>
+                <div class="activity-date">Purchased on {{ plan.purchase_date }}</div>
+            </div>
+            <div class="activity-status">{{ plan.status|title }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="text-align: center; padding: 3rem; opacity: 0.6;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+            <h3 style="color: #ffeb3b; margin-bottom: 1rem;">No Plans Yet</h3>
+            <p style="margin-bottom: 2rem;">
+                You haven't purchased any eSIM plans yet. Start exploring destinations and get connected worldwide!
+            </p>
+            <a href="{{ url_for('purchase') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                Get Started
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Why Choose Saily?</h2>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Instant Activation</h3>
+            <p class="feature-text">Get connected in seconds, no waiting required. Your eSIM activates automatically when you arrive at your destination.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">Secure & Private</h3>
+            <p class="feature-text">Built by the NordVPN team with security at the core. Your data is protected with enterprise-grade encryption.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">💰</div>
+            <h3 class="feature-title">Affordable Plans</h3>
+            <p class="feature-text">No more expensive roaming charges. Save up to 85% compared to traditional roaming with transparent pricing.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">🌐</div>
+            <h3 class="feature-title">Global Coverage</h3>
+            <p class="feature-text">Stay connected in 200+ countries worldwide. One eSIM works everywhere you travel.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">📞</div>
+            <h3 class="feature-title">24/7 Support</h3>
+            <p class="feature-text">Get help whenever you need it with our round-the-clock customer support team.</p>
+        </div>
+
+        <div class="feature-item">
+            <div class="feature-icon">🚀</div>
+            <h3 class="feature-title">Easy Setup</h3>
+            <p class="feature-text">Download, choose your plan, and you're ready to go. No technical knowledge required.</p>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 3rem; padding: 2rem;">
+    <h3 style="color: #ffeb3b; margin-bottom: 1rem;">Ready to Get Started?</h3>
+    <p style="opacity: 0.8; margin-bottom: 2rem;">Join thousands of travelers who trust Saily for their connectivity needs</p>
+    <a href="{{ url_for('purchase') }}" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 3rem;">
+        Buy Your First eSIM
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Update stats in real-time (simulation)
+    function updateStats() {
+        // This could fetch real data from the API in a real application
+        fetch('/api/balance')
+            .then(response => response.json())
+            .then(data => {
+                // Update balance display if needed
+                console.log('Current balance:', data.balance);
+            })
+            .catch(error => console.log('Error fetching balance:', error));
+    }
+
+    // Update every 30 seconds
+    setInterval(updateStats, 30000);
+
+    // Welcome animation for cards
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.stat-card, .action-card, .feature-item');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+
+    // Add hover effect to stats
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+</script>
+{% endblock %}

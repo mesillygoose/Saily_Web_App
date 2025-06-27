@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Top Up - Saily{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 2rem 0; margin-bottom: 2rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; color: #ffeb3b; margin-bottom: 1rem;">
+        Top Up Balance
+    </h1>
+    <p style="font-size: 1.2rem; opacity: 0.8;">
+        Add money to your Saily account
+    </p>
+</div>
+
+<div style="max-width: 500px; margin: 0 auto;">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Current Balance</h2>
+        </div>
+
+        <div style="text-align: center; padding: 2rem; background: rgba(255, 235, 59, 0.1); border-radius: 12px; margin-bottom: 2rem;">
+            <div style="font-size: 3rem; font-weight: 800; color: #ffeb3b;">
+                €{{ "%.2f"|format(current_balance) }}
+            </div>
+            <div style="opacity: 0.7;">Available to spend</div>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label class="form-label" for="amount">Amount to Add (€)</label>
+                <input type="number"
+                       class="form-control"
+                       id="amount"
+                       name="amount"
+                       placeholder="0.00"
+                       step="0.01"
+                       min="1"
+                       max="1000"
+                       required>
+                <small style="opacity: 0.7; font-size: 0.9rem;">Minimum: €1.00, Maximum: €1000.00</small>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label class="form-label">Quick Amounts</label>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                    <button type="button"
+                            onclick="setAmount(10)"
+                            style="padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; cursor: pointer;">
+                        €10
+                    </button>
+                    <button type="button"
+                            onclick="setAmount(25)"
+                            style="padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; cursor: pointer;">
+                        €25
+                    </button>
+                    <button type="button"
+                            onclick="setAmount(50)"
+                            style="padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; cursor: pointer;">
+                        €50
+                    </button>
+                    <button type="button"
+                            onclick="setAmount(100)"
+                            style="padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: white; cursor: pointer;">
+                        €100
+                    </button>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 235, 59, 0.1); border: 1px solid rgba(255, 235, 59, 0.3); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem;">
+                <h3 style="color: #ffeb3b; margin-bottom: 1rem;">Summary</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Current Balance:</span>
+                    <span>€{{ "%.2f"|format(current_balance) }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Amount to Add:</span>
+                    <span id="add-amount">€0.00</span>
+                </div>
+                <div style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 0.5rem; margin-top: 0.5rem;">
+                    <div style="display: flex; justify-content: space-between; font-weight: 600; color: #ffeb3b;">
+                        <span>New Balance:</span>
+                        <span id="new-balance">€{{ "%.2f"|format(current_balance) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" style="font-size: 1.1rem; padding: 1rem;">
+                Add Money to Account
+            </button>
+        </form>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<script>
+    const currentBalance = {{ current_balance }};
+    const amountInput = document.getElementById('amount');
+    const addAmountSpan = document.getElementById('add-amount');
+    const newBalanceSpan = document.getElementById('new-balance');
+
+    function setAmount(amount) {
+        amountInput.value = amount;
+        updateSummary();
+    }
+
+    function updateSummary() {
+        const amount = parseFloat(amountInput.value) ||
+    { % endblock %}
